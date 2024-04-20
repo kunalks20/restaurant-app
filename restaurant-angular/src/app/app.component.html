@@ -1,0 +1,41 @@
+<div *ngIf="!isAdminLoggedIn && !isCustomerLoggedIn">
+  <nz-header class="main-header" nz-row nzType="flex" style="background-color: #003973;">
+    <div>
+      <a style="color: white; margin-left: 50px; font-size: 18px; font-weight: bolder;" 
+        routerLink="/login">Restaurant System</a>
+    </div>
+    <div class="nav-links">
+      <a nz-button nzType="link" routerLink="/register" routerLinkActive="active">Sign Up</a>
+      <a nz-button nzType="link" routerLink="/login" routerLinkActive="active">Login</a>
+    </div>
+  </nz-header>
+</div>
+<!-- ADMIN MENU -->
+<div *ngIf="isAdminLoggedIn" >
+  <nz-header class="main-header" nz-row nzType="flex" style="background-color: #003973;">
+    <div>
+      <a style="color: white; margin-left: 50px; font-size: 18px; font-weight: bolder;" 
+        routerLink="/admin/dashboard">Restaurant System</a>
+    </div>
+    <div class="nav-links">
+      <a nz-button nzType="link" routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+      <a nz-button nzType="link" routerLink="/admin/category" routerLinkActive="active">Category</a>
+      <a nz-button nzType="link" routerLink="/login" routerLinkActive="active" (click)="logOut()">Logout</a>
+    </div>
+  </nz-header>
+</div>
+
+<!-- CUSTOMER MENU -->
+<div *ngIf="isCustomerLoggedIn">
+  <nz-header class="main-header" nz-row nzType="flex" style="background-color: #003973;">
+    <div>
+      <a style="color: white; margin-left: 50px; font-size: 18px; font-weight: bolder;" 
+        routerLink="/customer/dashboard">Restaurant System</a>
+    </div>
+    <div class="nav-links">
+      <a nz-button nzType="link" routerLink="/customer/dashboard" routerLinkActive="active">Dashboard</a>
+      <a nz-button nzType="link" routerLink="/login" routerLinkActive="active" (click)="logOut()">Logout</a>
+    </div>
+  </nz-header>
+</div>
+<router-outlet></router-outlet>
