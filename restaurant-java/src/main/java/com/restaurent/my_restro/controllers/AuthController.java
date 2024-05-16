@@ -4,10 +4,10 @@ import com.restaurent.my_restro.dtos.AuthenticationRequest;
 import com.restaurent.my_restro.dtos.AuthenticationResponse;
 import com.restaurent.my_restro.dtos.SignUpRequest;
 import com.restaurent.my_restro.dtos.UserDto;
-import com.restaurent.my_restro.entities.User;
+import com.restaurent.my_restro.entities.UserEntity;
 import com.restaurent.my_restro.repositories.UserRepo;
 import com.restaurent.my_restro.services.auth.AuthService;
-import com.restaurent.my_restro.services.auth.jwt.UserDetailServiceImpl;
+import com.restaurent.my_restro.services.jwt.UserDetailServiceImpl;
 import com.restaurent.my_restro.util.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
@@ -67,8 +66,8 @@ public class AuthController {
         }
 
         final UserDetails userDetails = userDetailService.loadUserByUsername(authReq.getEmail());
-        final String jwt = jwtUtil.generateToken(userDetails.getUsername());
-        Optional<User> optUser = userRepo.findFirstByEmail(userDetails.getUsername());
+        final String jwt = jwtUtil.generateToken(userDetails);
+        Optional<UserEntity> optUser = userRepo.findFirstByEmail(userDetails.getUsername());
         AuthenticationResponse authResponse = new AuthenticationResponse();
         if (optUser.isPresent()){
             authResponse.setJwt(jwt);

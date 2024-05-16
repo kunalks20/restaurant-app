@@ -1,6 +1,6 @@
 package com.restaurent.my_restro.repositories;
 
-import com.restaurent.my_restro.entities.User;
+import com.restaurent.my_restro.entities.UserEntity;
 import com.restaurent.my_restro.enums.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepo extends JpaRepository<User, Long> {
+public interface UserRepo extends JpaRepository<UserEntity, Long> {
 
-    Optional<User> findFirstByEmail(String email);
+    Optional<UserEntity> findFirstByEmail(String email);
 
-    Optional<User> findByRole(UserRole userRole);
+    Optional<UserEntity> findByRole(UserRole userRole);
 }

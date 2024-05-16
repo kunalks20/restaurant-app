@@ -1,13 +1,13 @@
 package com.restaurent.my_restro.entities;
 
-import com.restaurent.my_restro.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
-@Entity
+@Table
+@Entity(name = "category")
 @Data
-@Table(name = "users")
-public class User {
+public class CategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,10 +15,9 @@ public class User {
 
     private String name;
 
-    private String email;
+    private String description;
 
-    private String password;
-
-    private UserRole role;
-
+    @Lob
+    @Column
+    private byte[] img;
 }
