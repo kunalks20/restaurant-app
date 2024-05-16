@@ -1,19 +1,27 @@
 import { Component } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  Router,
+  RouterModule
+} from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { AuthService } from '../../auth-services/auth-service/auth.service';
-import { DemoNgZorroAntdModule } from '../../modules/demo-ng-zorro-antd-module.module';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { StorageService } from '../../auth-services/storage-service/storage.service';
+import { DemoNgZorroAntdModule } from '../../modules/demo-ng-zorro-antd-module.module';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [DemoNgZorroAntdModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-
   loginForm!: FormGroup;
   isSpinning!: boolean;
   hidePassword = true;
@@ -21,12 +29,14 @@ export class LoginComponent {
   constructor(
     private service: AuthService,
     private fb: FormBuilder,
-    private router: Router) {}
+    private router: Router,
+    private message: NzMessageService
+  ) {}
 
   ngOnInit() {
     this.loginForm = this.fb.group({
       email: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
     });
   }
 
@@ -35,31 +45,32 @@ export class LoginComponent {
   }
 
   submitForm() {
-    console.log(this.loginForm.value);
-    this.service.login(this.loginForm.value).subscribe((res) => {
-      console.log(res);
-      if(res.userId != null){
-        const user = {
-          id: res.userId,
-          role: res.userRole
+    this.isSpinning = true;
+    this.service.login(this.loginForm.value).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.isSpinning = false;
+        if (res.userId != null) {
+          const user = {
+            id: res.userId,
+            role: res.userRole,
+          };
+          console.log(user);
+          StorageService.saveUser(user);
+          StorageService.saveToken(res.jwt);
+          if (StorageService.isAdminLoggedIn()) {
+            this.router.navigate(['/admin']);
+          } else if (StorageService.isCustomerLoggedIn()) {
+            this.router.navigate(['/customer']);
+          } else {
+            console.log('Bad Credentials');
+          }
         }
-        console.log(user);
-        StorageService.saveUser(user);
-        StorageService.saveToken(res.jwt);
-        if(StorageService.isAdminLoggedIn()){
-          this.router.navigate(['/admin']);
-        }else if(StorageService.isCustomerLoggedIn()){
-          this.router.navigate(['/customer']);
-        } else{
-          console.log("Bad Credentials");
-        }
-      }
-      else{
-        console.log("Bad Credentials");
-        
-      }
-    })
-    
+      },
+      error: () => {
+        this.isSpinning = false;
+        this.message.error("Bad Credentials", {nzDuration: 5000});
+      },
+    });
   }
-
 }

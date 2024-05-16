@@ -8,6 +8,7 @@ const USER = 'user';
   providedIn: 'root',
 })
 export class StorageService {
+
   static saveToken(token: string): void {
     localStorage.removeItem(TOKEN);
     localStorage.setItem(TOKEN, token);
@@ -56,5 +57,13 @@ export class StorageService {
   static signOut(){
     localStorage.removeItem(TOKEN);
     localStorage.removeItem(USER);
+  }
+
+  static getUserId(): string {
+    const user = this.getUser();
+    if (user == null) {
+      return '';
+    }
+    return user.id;
   }
 }

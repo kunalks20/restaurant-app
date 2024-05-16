@@ -1,0 +1,60 @@
+<div style="margin-top: 50px;">
+  <nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" nzTip="Working">
+    <div class="parent">
+      <div class="child">
+        <div class="imgDiv">
+          <h2>Update Product</h2>
+        </div>
+
+        <form nz-form [formGroup]="validateForm" (ngSubmit)="updateProduct()">
+          <div nz-row>
+            <div class="file-upload-container">
+              <label class="file-upload-label">
+                <span style="margin-left: 140px;">Select a File</span>
+                <input type="file" nz-button nzType="primary"
+                accept="image">
+              </label>
+
+              <div *ngIf="imagePreview" class="image-preview">
+                <div class="circle-image">
+                  <img [src]="imagePreview" alt="Existing Image" class="preview-image">
+                </div>
+              </div>
+
+              <div *ngIf="existingImage" class="image-preview">
+                <div class="circle-image">
+                  <img [src]="existingImage" alt="Existing Image" class="preview-image">
+                </div>
+              </div>
+
+            </div>
+            <div nz-col nzSpan="24" style="margin-top: 20px;">
+              <nz-form-item>
+                <nz-form-control nzHasFeedback [nzXs]="24" nzErrorTip="This input is required">
+                  <input nz-input placeholder="Name" formControlName="name"/>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col nzSpan="24">
+              <nz-form-item>
+                <nz-form-control nzHasFeedback [nzXs]="24" nzErrorTip="This input is required!">
+                  <input type="number" nz-input placeholder="Price" formControlName="price" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col nzSpan="24">
+              <nz-form-item>
+                <nz-form-control nzHasFeedback [nzXs]="24" nzErrorTip="This input is required!">
+                  <textarea rows="1" nz-input placeholder="Desciption" formControlName="description"></textarea>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <button nz-button class="login-form-btn login-form-margin" [nzType]="'primary'">Update</button>
+        </form>
+      </div>
+    </div>
+  </nz-spin>
+</div>

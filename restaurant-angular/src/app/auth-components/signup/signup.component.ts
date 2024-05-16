@@ -4,7 +4,7 @@ import { AuthService } from '../../auth-services/auth-service/auth.service';
 import { DemoNgZorroAntdModule } from '../../modules/demo-ng-zorro-antd-module.module';
 import { CommonModule } from '@angular/common';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -40,7 +40,8 @@ export class SignupComponent {
   constructor (
     private fb: FormBuilder,
     private service: AuthService,
-    private notification: NzNotificationService) {}
+    private notification: NzNotificationService, 
+    private router: Router) {}
 
   register(){
     console.log("My form", this.validateForm.value);
@@ -48,6 +49,7 @@ export class SignupComponent {
       res => {
         console.log(res);
         if(res.name != ''){
+          this.router.navigate(['/login']);
           this.notification.success("SUCCESS", "You're registered successfully", {nzDuration: 5000});
         } else {
           this.notification.error("ERROR", "Something went wrong", {nzDuration: 5000});
